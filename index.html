@@ -1,0 +1,282 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1.0" />
+<title>6 month career tracker</title>
+<style>
+  * { box-sizing: border-box; }
+  :root {
+    --bg: #1a1a18;
+    --surface: #242422;
+    --surface-2: #2c2c29;
+    --border: #3a3a36;
+    --text: #ece9e2;
+    --text-dim: #a8a59c;
+    --text-faint: #74716a;
+    --accent: #c96442;
+  }
+  body {
+    font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
+    background: var(--bg);
+    color: var(--text);
+    margin: 0;
+    padding: 1.25rem;
+    -webkit-tap-highlight-color: transparent;
+  }
+  .wrap { max-width: 720px; margin: 0 auto; }
+  h1 { font-size: 19px; font-weight: 600; margin: 0 0 1.25rem; letter-spacing: -0.01em; }
+  .top-row { display: flex; justify-content: space-between; align-items: baseline; margin-bottom: 1.25rem; }
+  .top-row p { font-size: 13px; color: var(--text-dim); margin: 0; }
+  .nav-btns { display: flex; gap: 8px; }
+  button {
+    padding: 9px 14px; font-size: 14px; border: 1px solid var(--border); border-radius: 8px;
+    background: var(--surface); color: var(--text); cursor: pointer;
+  }
+  button:active { transform: scale(0.96); }
+  .metrics { display: grid; grid-template-columns: repeat(3, 1fr); gap: 10px; margin-bottom: 1.5rem; }
+  .metric-card { background: var(--surface); border: 1px solid var(--border); border-radius: 10px; padding: 0.9rem; }
+  .metric-card p:first-child { font-size: 12px; color: var(--text-dim); margin: 0 0 4px; }
+  .metric-card p:last-child { font-size: 22px; font-weight: 600; margin: 0; }
+  .phase-banner {
+    background: #2a2620; border: 1px solid #4a3e28; border-radius: 10px; padding: 12px 16px; margin-bottom: 1.5rem;
+    font-size: 13px; color: #e0b97d;
+  }
+  .section-card {
+    background: var(--surface); border: 1px solid var(--border); border-radius: 12px;
+    padding: 1rem 1.1rem; margin-bottom: 12px;
+  }
+  .section-head { display: flex; justify-content: space-between; align-items: center; margin-bottom: 10px; flex-wrap: wrap; gap: 4px; }
+  .section-title { display: flex; align-items: center; gap: 8px; font-weight: 600; font-size: 15px; }
+  .dot { width: 8px; height: 8px; border-radius: 50%; display: inline-block; flex-shrink: 0; }
+  .section-sub { font-size: 11.5px; color: var(--text-faint); }
+  .item-row { display: flex; align-items: flex-start; gap: 10px; padding: 7px 0; font-size: 14px; cursor: pointer; }
+  .item-row input { margin-top: 3px; width: 18px; height: 18px; flex-shrink: 0; accent-color: var(--accent); }
+  .item-done { color: var(--text-faint); text-decoration: line-through; }
+  .res-row { display: flex; flex-wrap: wrap; gap: 6px; padding-top: 9px; margin-top: 6px; border-top: 1px solid var(--border); }
+  .res-chip {
+    font-size: 12px; padding: 6px 10px; border-radius: 7px; background: var(--surface-2); border: 1px solid var(--border);
+    color: var(--text); text-decoration: none; white-space: nowrap;
+  }
+  .res-chip:active { transform: scale(0.96); }
+  .footer { margin-top: 1.5rem; padding-top: 1rem; border-top: 1px solid var(--border); display: flex; justify-content: space-between; align-items: center; flex-wrap: wrap; gap: 8px; }
+  .footer p { font-size: 11px; color: var(--text-faint); margin: 0; }
+</style>
+</head>
+<body>
+<div class="wrap">
+  <h1>6 month career tracker</h1>
+  <div class="top-row">
+    <p id="week-label">Week 1 of 26</p>
+    <div class="nav-btns">
+      <button id="prev-week">&larr; prev</button>
+      <button id="next-week">next &rarr;</button>
+    </div>
+  </div>
+
+  <div class="metrics">
+    <div class="metric-card"><p>This week</p><p id="week-pct">0%</p></div>
+    <div class="metric-card"><p>Overall</p><p id="overall-pct">0%</p></div>
+    <div class="metric-card"><p>Streak</p><p id="streak-val">0 wks</p></div>
+  </div>
+
+  <div class="phase-banner" id="phase-banner"></div>
+
+  <div id="sections"></div>
+
+  <div class="footer">
+    <p>Saved on this device automatically &middot; works offline</p>
+    <button id="reset-week">clear this week</button>
+  </div>
+</div>
+
+<script>
+const PLAN = [
+  {
+    id: 'dsa', title: 'DSA', color: '#5b9bd5',
+    weekdayLabel: 'Night block · 10:30pm–1:30am',
+    resources: [
+      { label: 'Neetcode 150', url: 'https://neetcode.io/practice' },
+      { label: 'LeetCode', url: 'https://leetcode.com/problemset/' },
+      { label: 'Pramp — free mocks', url: 'https://www.pramp.com/' }
+    ],
+    weekly: [
+      'Solve 12–15 DSA problems (pattern-focused)',
+      'Review 2 problems you got wrong — redo from scratch',
+      'Mock interview / timed practice (from month 3 onward)'
+    ]
+  },
+  {
+    id: 'sysdesign', title: 'System design', color: '#9b8fe8',
+    weekdayLabel: 'Morning block · 6–7am',
+    resources: [
+      { label: 'System Design Primer', url: 'https://github.com/donnemartin/system-design-primer' },
+      { label: 'karanpratapsingh notes', url: 'https://github.com/karanpratapsingh/system-design' },
+      { label: 'Gaurav Sen (YouTube)', url: 'https://www.youtube.com/@gkcs' },
+      { label: 'ByteByteGo (YouTube)', url: 'https://www.youtube.com/@ByteByteGo' },
+      { label: 'High Scalability', url: 'http://highscalability.com/' },
+      { label: 'Excalidraw', url: 'https://excalidraw.com/' }
+    ],
+    weekly: [
+      'Read 1 chapter / primer section',
+      'Watch 1 teardown video on same topic',
+      'Design 1 system yourself on Excalidraw before checking solution'
+    ]
+  },
+  {
+    id: 'security', title: 'AI security (hobby)', color: '#e08363',
+    weekdayLabel: 'Weekend · light, keep it fun',
+    resources: [
+      { label: 'OWASP LLM Top 10', url: 'https://genai.owasp.org/resource/owasp-top-10-for-llm-applications-2025/' },
+      { label: 'MITRE ATLAS', url: 'https://atlas.mitre.org/' },
+      { label: 'Lakera Gandalf', url: 'https://gandalf.lakera.ai/' },
+      { label: 'HackAPrompt', url: 'https://www.hackaprompt.com/' },
+      { label: 'huntr.com', url: 'https://huntr.com/' },
+      { label: 'CyberChef', url: 'https://gchq.github.io/CyberChef/' }
+    ],
+    weekly: [
+      'huntr — read source code / hunt for 1 vuln class',
+      'Gandalf or HackAPrompt — 30 min hands-on practice'
+    ]
+  },
+  {
+    id: 'project', title: 'Sentinel Scanner + OSS', color: '#5cb88a',
+    weekdayLabel: 'Weekend block',
+    resources: [
+      { label: 'vLLM (GitHub)', url: 'https://github.com/vllm-project/vllm' },
+      { label: 'exo (GitHub)', url: 'https://github.com/exo-explore/exo' }
+    ],
+    weekly: [
+      'Ship 1 concrete improvement to Sentinel Scanner',
+      'Look for 1 OSS issue to contribute to (docs → real bugs)'
+    ]
+  },
+  {
+    id: 'apps', title: 'Applications & visibility', color: '#e0b454',
+    weekdayLabel: 'From month 5 — ramps up',
+    resources: [
+      { label: 'Wellfound', url: 'https://wellfound.com/' },
+      { label: 'RemoteOK', url: 'https://remoteok.com/' },
+      { label: 'Himalayas', url: 'https://himalayas.app/' }
+    ],
+    weekly: [
+      'Apply to target roles (count grows month-on-month)',
+      'Post 1 update on LinkedIn (every 2 weeks) about what you built'
+    ]
+  }
+];
+
+const PHASES = [
+  { weeks: [1, 8], text: 'Months 1–2 · Foundation — DSA patterns, system design basics, Sentinel Scanner v1.' },
+  { weeks: [9, 16], text: 'Months 3–4 · Depth + visibility — harder DSA, OSS contribution, huntr submissions, start posting.' },
+  { weeks: [17, 21], text: 'Month 5 · Mocks + portfolio polish — demo video, resume v1, applications begin.' },
+  { weeks: [22, 26], text: 'Month 6 · Heavy applications — interview loops, negotiation prep.' }
+];
+
+const STORAGE_KEY = 'career-tracker-v1';
+let state = { week: 1, checks: {} };
+
+function load() {
+  try {
+    const raw = localStorage.getItem(STORAGE_KEY);
+    if (raw) state = JSON.parse(raw);
+  } catch (e) {}
+}
+
+function save() {
+  try { localStorage.setItem(STORAGE_KEY, JSON.stringify(state)); } catch (e) {}
+}
+
+function weekKey(w) { return 'w' + w; }
+
+function calcWeekPct(w) {
+  const total = PLAN.reduce((s, sec) => s + sec.weekly.length, 0);
+  const wk = state.checks[weekKey(w)] || {};
+  let done = 0;
+  PLAN.forEach(sec => sec.weekly.forEach((_, i) => { if (wk[sec.id + '-' + i]) done++; }));
+  return total ? Math.round((done / total) * 100) : 0;
+}
+
+function calcOverallPct() {
+  let sum = 0;
+  for (let w = 1; w <= 26; w++) sum += calcWeekPct(w);
+  return Math.round(sum / 26);
+}
+
+function calcStreak() {
+  let streak = 0;
+  for (let w = state.week; w >= 1; w--) {
+    if (calcWeekPct(w) >= 60) streak++; else break;
+  }
+  return streak;
+}
+
+function render() {
+  document.getElementById('week-label').textContent = 'Week ' + state.week + ' of 26';
+  document.getElementById('week-pct').textContent = calcWeekPct(state.week) + '%';
+  document.getElementById('overall-pct').textContent = calcOverallPct() + '%';
+  document.getElementById('streak-val').textContent = calcStreak() + ' wks';
+
+  const phase = PHASES.find(p => state.week >= p.weeks[0] && state.week <= p.weeks[1]);
+  document.getElementById('phase-banner').textContent = phase ? phase.text : '';
+
+  const wk = state.checks[weekKey(state.week)] || {};
+  const container = document.getElementById('sections');
+  container.innerHTML = '';
+
+  PLAN.forEach(sec => {
+    const card = document.createElement('div');
+    card.className = 'section-card';
+
+    let html = '<div class="section-head">';
+    html += '<span class="section-title"><span class="dot" style="background:' + sec.color + '"></span>' + sec.title + '</span>';
+    html += '<span class="section-sub">' + sec.weekdayLabel + '</span>';
+    html += '</div>';
+
+    sec.weekly.forEach((item, i) => {
+      const checked = !!wk[sec.id + '-' + i];
+      html += '<label class="item-row">';
+      html += '<input type="checkbox" data-sec="' + sec.id + '" data-idx="' + i + '" ' + (checked ? 'checked' : '') + ' />';
+      html += '<span class="' + (checked ? 'item-done' : '') + '">' + item + '</span>';
+      html += '</label>';
+    });
+
+    html += '<div class="res-row">';
+    sec.resources.forEach(r => {
+      html += '<a class="res-chip" href="' + r.url + '" target="_blank" rel="noopener">' + r.label + ' ↗</a>';
+    });
+    html += '</div>';
+
+    card.innerHTML = html;
+    container.appendChild(card);
+  });
+
+  container.querySelectorAll('input[type=checkbox]').forEach(cb => {
+    cb.addEventListener('change', (e) => {
+      const sec = e.target.getAttribute('data-sec');
+      const idx = e.target.getAttribute('data-idx');
+      const k = weekKey(state.week);
+      if (!state.checks[k]) state.checks[k] = {};
+      state.checks[k][sec + '-' + idx] = e.target.checked;
+      save();
+      render();
+    });
+  });
+}
+
+document.getElementById('prev-week').addEventListener('click', () => {
+  if (state.week > 1) { state.week--; save(); render(); }
+});
+document.getElementById('next-week').addEventListener('click', () => {
+  if (state.week < 26) { state.week++; save(); render(); }
+});
+document.getElementById('reset-week').addEventListener('click', () => {
+  state.checks[weekKey(state.week)] = {};
+  save(); render();
+});
+
+load();
+render();
+</script>
+</body>
+</html>
