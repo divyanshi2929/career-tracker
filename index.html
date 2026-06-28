@@ -23,40 +23,65 @@
     --coral: #e08363;
   }
   body { font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif; background: var(--bg); color: var(--text); min-height: 100vh; padding: 1.25rem; -webkit-tap-highlight-color: transparent; }
-  .wrap { max-width: 680px; margin: 0 auto; }
+  .wrap { max-width: 700px; margin: 0 auto; }
 
-  /* header */
   .header { display: flex; justify-content: space-between; align-items: center; margin-bottom: 1.5rem; flex-wrap: wrap; gap: 10px; }
   .header h1 { font-size: 17px; font-weight: 600; letter-spacing: -0.01em; }
   .day-nav { display: flex; align-items: center; gap: 8px; }
-  .day-nav span { font-size: 13px; color: var(--dim); min-width: 80px; text-align: center; }
+  .day-nav span { font-size: 13px; color: var(--dim); min-width: 90px; text-align: center; }
   button { border: 1px solid var(--border); border-radius: 8px; background: var(--surface-2); color: var(--text); cursor: pointer; font-size: 14px; padding: 8px 13px; }
   button:active { transform: scale(0.96); }
 
-  /* metrics */
-  .metrics { display: grid; grid-template-columns: repeat(3, 1fr); gap: 8px; margin-bottom: 1.25rem; }
-  .metric { background: var(--surface); border: 1px solid var(--border); border-radius: 10px; padding: 0.8rem; }
+  .metrics { display: grid; grid-template-columns: repeat(4, 1fr); gap: 8px; margin-bottom: 1.25rem; }
+  .metric { background: var(--surface); border: 1px solid var(--border); border-radius: 10px; padding: 0.75rem; }
   .metric p { font-size: 11px; color: var(--dim); margin-bottom: 4px; }
-  .metric span { font-size: 20px; font-weight: 600; }
+  .metric span { font-size: 19px; font-weight: 600; }
+
+  /* calendar */
+  .cal-card { background: var(--surface); border: 1px solid var(--border); border-radius: 12px; padding: 1rem 1.1rem; margin-bottom: 1.25rem; }
+  .cal-title { font-size: 12px; color: var(--dim); font-weight: 600; text-transform: uppercase; letter-spacing: 0.05em; margin-bottom: 10px; display: flex; justify-content: space-between; align-items: center; }
+  .cal-legend { display: flex; align-items: center; gap: 5px; font-size: 11px; color: var(--faint); font-weight: 400; text-transform: none; letter-spacing: 0; }
+  .cal-legend-dot { width: 10px; height: 10px; border-radius: 2px; }
+  .cal-grid { display: flex; flex-wrap: wrap; gap: 3px; }
+  .cal-day {
+    width: 13px; height: 13px; border-radius: 2px; cursor: pointer;
+    flex-shrink: 0; position: relative;
+  }
+  .cal-day:hover::after {
+    content: attr(data-tip);
+    position: absolute; bottom: 16px; left: 50%; transform: translateX(-50%);
+    background: #111; color: var(--text); font-size: 11px; padding: 4px 8px;
+    border-radius: 5px; white-space: nowrap; z-index: 10; pointer-events: none;
+  }
+  .cal-month-row { display: flex; flex-wrap: wrap; gap: 3px; width: 100%; margin-bottom: 6px; }
+  .cal-month-label { font-size: 11px; color: var(--faint); width: 100%; margin-top: 8px; margin-bottom: 2px; }
+  .cal-week-labels { display: flex; flex-direction: column; gap: 3px; margin-right: 5px; }
+  .cal-week-label { font-size: 10px; color: var(--faint); height: 13px; line-height: 13px; }
+  .cal-body { display: flex; overflow-x: auto; padding-bottom: 4px; }
+  .cal-cols { display: flex; gap: 3px; }
+  .cal-col { display: flex; flex-direction: column; gap: 3px; }
+  .cal-spacer { width: 13px; height: 13px; flex-shrink: 0; }
+  .cal-stats { display: flex; gap: 16px; margin-top: 10px; flex-wrap: wrap; }
+  .cal-stat { font-size: 12px; color: var(--dim); }
+  .cal-stat strong { color: var(--text); }
 
   /* manifestation */
   .mantra-card { background: #1e1a14; border: 1px solid #4a3820; border-radius: 12px; padding: 1.1rem 1.2rem; margin-bottom: 1.25rem; }
-  .mantra-header { display: flex; justify-content: space-between; align-items: center; margin-bottom: 10px; }
+  .mantra-header { display: flex; justify-content: space-between; align-items: center; margin-bottom: 10px; flex-wrap: wrap; gap: 8px; }
   .mantra-label { font-size: 12px; color: var(--amber); font-weight: 600; letter-spacing: 0.05em; text-transform: uppercase; }
-  .session-row { display: flex; gap: 8px; align-items: center; }
-  .session-btn { font-size: 13px; padding: 6px 11px; }
+  .session-row { display: flex; gap: 6px; }
+  .session-btn { font-size: 12px; padding: 6px 10px; }
   .session-btn.active { background: var(--accent); border-color: var(--accent); color: #fff; }
-  .mantra-text { font-size: 14.5px; line-height: 1.7; color: #e8dcc8; font-style: italic; margin-bottom: 12px; }
-  .rep-row { display: flex; gap: 8px; align-items: center; flex-wrap: wrap; }
+  .mantra-text { font-size: 14px; line-height: 1.75; color: #e8dcc8; font-style: italic; margin-bottom: 12px; }
+  .rep-row { display: flex; gap: 6px; align-items: center; flex-wrap: wrap; }
   .rep-dot { width: 26px; height: 26px; border-radius: 50%; border: 1.5px solid var(--border); background: var(--surface-2); cursor: pointer; display: flex; align-items: center; justify-content: center; font-size: 11px; color: var(--faint); transition: all 0.15s; }
   .rep-dot.done { background: var(--accent); border-color: var(--accent); color: #fff; }
-  .rep-divider { width: 1px; height: 22px; background: var(--border); margin: 0 2px; }
-  .speak-btn { font-size: 13px; padding: 7px 13px; margin-left: auto; }
+  .rep-divider { width: 1px; height: 22px; background: var(--border); margin: 0 1px; }
+  .speak-btn { font-size: 13px; padding: 7px 13px; }
+  .mantra-bottom { display: flex; justify-content: space-between; align-items: center; flex-wrap: wrap; gap: 8px; }
 
-  /* phase */
   .phase { background: #1c2028; border: 1px solid #2a3340; border-radius: 10px; padding: 11px 14px; margin-bottom: 1.25rem; font-size: 13px; color: #8ab4d8; }
 
-  /* section */
   .section { background: var(--surface); border: 1px solid var(--border); border-radius: 12px; padding: 1rem 1.1rem; margin-bottom: 10px; }
   .sec-head { display: flex; justify-content: space-between; align-items: center; margin-bottom: 10px; flex-wrap: wrap; gap: 4px; }
   .sec-title { display: flex; align-items: center; gap: 7px; font-weight: 600; font-size: 14.5px; }
@@ -69,12 +94,15 @@
   .chip { font-size: 12px; padding: 5px 10px; border-radius: 7px; background: var(--surface-2); border: 1px solid var(--border); color: var(--text); text-decoration: none; }
   .chip:active { transform: scale(0.96); }
 
-  /* footer */
   .footer { margin-top: 1.5rem; padding-top: 1rem; border-top: 1px solid var(--border); display: flex; justify-content: space-between; align-items: center; flex-wrap: wrap; gap: 8px; }
   .footer p { font-size: 11px; color: var(--faint); }
-
-  /* weekend badge */
   .badge { font-size: 11px; padding: 3px 8px; border-radius: 20px; background: var(--accent-dim); color: var(--accent); border: 1px solid var(--accent); margin-left: 6px; }
+
+  @media (max-width: 480px) {
+    .metrics { grid-template-columns: repeat(2, 1fr); }
+    .cal-day { width: 11px; height: 11px; }
+    .cal-spacer { width: 11px; height: 11px; }
+  }
 </style>
 </head>
 <body>
@@ -93,6 +121,37 @@
     <div class="metric"><p>Today</p><span id="today-pct">0%</span></div>
     <div class="metric"><p>This week</p><span id="week-pct">0%</span></div>
     <div class="metric"><p>Streak</p><span id="streak-val">0d</span></div>
+    <div class="metric"><p>Days left</p><span id="days-left">182</span></div>
+  </div>
+
+  <!-- calendar heatmap -->
+  <div class="cal-card">
+    <div class="cal-title">
+      6 month journey — 182 days
+      <div class="cal-legend">
+        <span>less</span>
+        <div class="cal-legend-dot" style="background:#2a2a27;border:1px solid #38382f"></div>
+        <div class="cal-legend-dot" style="background:#3d2318"></div>
+        <div class="cal-legend-dot" style="background:#8a3820"></div>
+        <div class="cal-legend-dot" style="background:#c96442"></div>
+        <div class="cal-legend-dot" style="background:#5cb88a"></div>
+        <span>done</span>
+      </div>
+    </div>
+    <div class="cal-body">
+      <div class="cal-week-labels">
+        <div style="height:16px"></div>
+        <div class="cal-week-label">Mon</div>
+        <div class="cal-week-label">Tue</div>
+        <div class="cal-week-label">Wed</div>
+        <div class="cal-week-label">Thu</div>
+        <div class="cal-week-label">Fri</div>
+        <div class="cal-week-label">Sat</div>
+        <div class="cal-week-label">Sun</div>
+      </div>
+      <div id="cal-cols" class="cal-cols"></div>
+    </div>
+    <div class="cal-stats" id="cal-stats"></div>
   </div>
 
   <!-- manifestation -->
@@ -100,13 +159,13 @@
     <div class="mantra-header">
       <span class="mantra-label">✦ 3·6·9 Manifestation</span>
       <div class="session-row">
-        <button class="session-btn" id="s-morning" onclick="setSession('morning')">Morning</button>
-        <button class="session-btn" id="s-afternoon" onclick="setSession('afternoon')">Noon</button>
-        <button class="session-btn" id="s-night" onclick="setSession('night')">Night</button>
+        <button class="session-btn" id="s-morning" onclick="setSession('morning')">Morning ×3</button>
+        <button class="session-btn" id="s-afternoon" onclick="setSession('afternoon')">Noon ×6</button>
+        <button class="session-btn" id="s-night" onclick="setSession('night')">Night ×9</button>
       </div>
     </div>
     <p class="mantra-text" id="mantra-text"></p>
-    <div style="display:flex; align-items:center; flex-wrap:wrap; gap:10px;">
+    <div class="mantra-bottom">
       <div class="rep-row" id="rep-row"></div>
       <button class="speak-btn" onclick="speakMantra()">▶ Read aloud</button>
     </div>
@@ -123,40 +182,31 @@
 </div>
 <script>
 const MANTRA = "I am a world-class AI security engineer and bug bounty hunter, building my own startup, thriving at my dream job, growing stronger and healthier every single day, and abundantly earning what I deserve — and I feel deeply grateful for this extraordinary life I have created.";
-
+const TOTAL_DAYS = 182;
 const SESSION_REPS = { morning: 3, afternoon: 6, night: 9 };
 
 const WEEKDAY_PLAN = [
   {
-    id: 'dsa', title: 'DSA', color: '#5b9bd5',
-    sub: 'Night block · 10:30pm–1:30am',
+    id: 'dsa', title: 'DSA', color: '#5b9bd5', sub: 'Night block · 10:30pm–1:30am',
     resources: [
       { label: 'Neetcode 150', url: 'https://neetcode.io/practice' },
       { label: 'LeetCode', url: 'https://leetcode.com/problemset/' },
       { label: 'Pramp', url: 'https://www.pramp.com/' }
     ],
-    tasks: [
-      'Solve 3–4 DSA problems (pattern-focused)',
-      'If got stuck — understand solution fully, add to notes'
-    ]
+    tasks: ['Solve 3–4 DSA problems (pattern-focused)', 'If stuck — understand solution fully, add to notes']
   },
   {
-    id: 'sysdesign', title: 'System design', color: '#9b8fe8',
-    sub: 'Morning block · 6–7am',
+    id: 'sysdesign', title: 'System design', color: '#9b8fe8', sub: 'Morning block · 6–7am',
     resources: [
       { label: 'System Design Primer', url: 'https://github.com/donnemartin/system-design-primer' },
       { label: 'Gaurav Sen', url: 'https://www.youtube.com/@gkcs' },
       { label: 'ByteByteGo', url: 'https://www.youtube.com/@ByteByteGo' },
       { label: 'Excalidraw', url: 'https://excalidraw.com/' }
     ],
-    tasks: [
-      'Read 1 section from primer OR watch 1 video (20–30 min)',
-      'Write 3 bullet notes of what you learned'
-    ]
+    tasks: ['Read 1 section from primer OR watch 1 video (20–30 min)', 'Write 3 bullet notes of what you learned']
   },
   {
-    id: 'security', title: 'AI security (hobby)', color: '#e08363',
-    sub: 'Light daily touch — 20 min',
+    id: 'security', title: 'AI security (hobby)', color: '#e08363', sub: 'Light daily touch · 20 min',
     resources: [
       { label: 'OWASP LLM Top 10', url: 'https://genai.owasp.org/resource/owasp-top-10-for-llm-applications-2025/' },
       { label: 'MITRE ATLAS', url: 'https://atlas.mitre.org/' },
@@ -164,131 +214,175 @@ const WEEKDAY_PLAN = [
       { label: 'huntr.com', url: 'https://huntr.com/' },
       { label: 'CyberChef', url: 'https://gchq.github.io/CyberChef/' }
     ],
-    tasks: [
-      'Read 1 ATLAS case study OR spend 20 min on Gandalf/HackAPrompt'
-    ]
+    tasks: ['Read 1 ATLAS case study OR spend 20 min on Gandalf/HackAPrompt']
   }
 ];
 
 const WEEKEND_PLAN = [
   {
-    id: 'sentinel', title: 'Sentinel Scanner + OSS', color: '#5cb88a',
-    sub: 'Main weekend block',
+    id: 'sentinel', title: 'Sentinel Scanner + OSS', color: '#5cb88a', sub: 'Main weekend block',
     resources: [
       { label: 'vLLM (GitHub)', url: 'https://github.com/vllm-project/vllm' },
       { label: 'exo (GitHub)', url: 'https://github.com/exo-explore/exo' }
     ],
-    tasks: [
-      'Ship 1 concrete improvement to Sentinel Scanner',
-      'Look at open issues in vLLM or exo — pick 1 to attempt'
-    ]
+    tasks: ['Ship 1 concrete improvement to Sentinel Scanner', 'Look at open issues in vLLM or exo — pick 1 to attempt']
   },
   {
-    id: 'security-deep', title: 'AI security (deep dive)', color: '#e08363',
-    sub: 'Weekend longer session',
+    id: 'security-deep', title: 'AI security (deep dive)', color: '#e08363', sub: 'Weekend longer session',
     resources: [
       { label: 'MITRE ATLAS', url: 'https://atlas.mitre.org/' },
       { label: 'HackAPrompt', url: 'https://www.hackaprompt.com/' },
       { label: 'huntr.com', url: 'https://huntr.com/' },
       { label: 'CyberChef', url: 'https://gchq.github.io/CyberChef/' }
     ],
-    tasks: [
-      'huntr — read source code of target repo, hunt for 1 vuln class',
-      'HackAPrompt or Gandalf — 30 min active practice',
-      'Write short notes: what did you find / learn today'
-    ]
+    tasks: ['huntr — read source code of target repo, hunt for 1 vuln class', 'HackAPrompt or Gandalf — 30 min active practice', 'Write short notes: what did you find / learn today']
   },
   {
-    id: 'dsa-review', title: 'DSA review', color: '#5b9bd5',
-    sub: 'Light catch-up',
+    id: 'dsa-review', title: 'DSA review', color: '#5b9bd5', sub: 'Light catch-up',
     resources: [
       { label: 'Neetcode 150', url: 'https://neetcode.io/practice' },
       { label: 'LeetCode', url: 'https://leetcode.com/problemset/' }
     ],
-    tasks: [
-      'Redo 2–3 problems you struggled with this week from scratch',
-      'Mock interview practice (Pramp) — 1 session from month 3'
-    ]
+    tasks: ['Redo 2–3 problems you struggled with this week from scratch', 'Mock interview practice (Pramp) — 1 session from month 3']
   },
   {
-    id: 'apps', title: 'Applications & visibility', color: '#e0b454',
-    sub: 'From month 5 onward',
+    id: 'apps', title: 'Applications & visibility', color: '#e0b454', sub: 'From month 5 onward',
     resources: [
       { label: 'Wellfound', url: 'https://wellfound.com/' },
       { label: 'RemoteOK', url: 'https://remoteok.com/' },
       { label: 'Himalayas', url: 'https://himalayas.app/' }
     ],
-    tasks: [
-      'Apply to 5–10 target roles',
-      'Post 1 LinkedIn update about what you built (every 2 weeks)'
-    ]
+    tasks: ['Apply to 5–10 target roles', 'Post 1 LinkedIn update about what you built (every 2 weeks)']
   }
 ];
 
 const PHASES = [
-  { days: [1, 56], text: 'Months 1–2 · Foundation — DSA patterns, system design basics, Sentinel Scanner v1.' },
-  { days: [57, 112], text: 'Months 3–4 · Depth + visibility — harder DSA, OSS, huntr submissions, start posting.' },
-  { days: [113, 147], text: 'Month 5 · Mocks + polish — demo video, resume v1, applications begin.' },
-  { days: [148, 182], text: 'Month 6 · Heavy applications — interview loops, negotiation prep.' }
+  { days: [1,56], text: 'Months 1–2 · Foundation — DSA patterns, system design basics, Sentinel Scanner v1.' },
+  { days: [57,112], text: 'Months 3–4 · Depth + visibility — harder DSA, OSS, huntr submissions, start posting.' },
+  { days: [113,147], text: 'Month 5 · Mocks + polish — demo video, resume v1, applications begin.' },
+  { days: [148,182], text: 'Month 6 · Heavy applications — interview loops, negotiation prep.' }
 ];
 
-const KEY = 'daily-tracker-v2';
+const KEY = 'daily-tracker-v3';
 let state = { dayOffset: 0, checks: {}, reps: {}, session: 'morning', startDate: Date.now() };
 
-function load() {
-  try { const r = localStorage.getItem(KEY); if (r) state = { ...state, ...JSON.parse(r) }; } catch(e) {}
-}
-function save() {
-  try { localStorage.setItem(KEY, JSON.stringify(state)); } catch(e) {}
-}
+function load() { try { const r = localStorage.getItem(KEY); if (r) state = { ...state, ...JSON.parse(r) }; } catch(e) {} }
+function save() { try { localStorage.setItem(KEY, JSON.stringify(state)); } catch(e) {} }
+function dayKey(o) { return 'd' + o; }
 
-function dayKey(offset) { return 'd' + offset; }
-
-function getDateStr(offset) {
-  const d = new Date(state.startDate + offset * 86400000);
+function getDateStr(o) {
+  const d = new Date(state.startDate + o * 86400000);
   return d.toLocaleDateString('en-IN', { weekday: 'short', day: 'numeric', month: 'short' });
 }
+function isWeekend(o) { const d = new Date(state.startDate + o * 86400000); return d.getDay() === 0 || d.getDay() === 6; }
+function getPlan(o) { return isWeekend(o) ? WEEKEND_PLAN : WEEKDAY_PLAN; }
 
-function isWeekend(offset) {
-  const d = new Date(state.startDate + offset * 86400000);
-  return d.getDay() === 0 || d.getDay() === 6;
-}
-
-function getDayNum(offset) { return offset + 1; }
-
-function getPlan(offset) { return isWeekend(offset) ? WEEKEND_PLAN : WEEKDAY_PLAN; }
-
-function calcDayPct(offset) {
-  const plan = getPlan(offset);
+function calcDayPct(o) {
+  const plan = getPlan(o);
   const total = plan.reduce((s, sec) => s + sec.tasks.length, 0);
-  const chk = state.checks[dayKey(offset)] || {};
+  const chk = state.checks[dayKey(o)] || {};
   let done = 0;
   plan.forEach(sec => sec.tasks.forEach((_, i) => { if (chk[sec.id + '-' + i]) done++; }));
   return total ? Math.round((done / total) * 100) : 0;
 }
 
+function getDayColor(o) {
+  if (o > state.dayOffset) return '#2a2a27'; // future
+  const pct = calcDayPct(o);
+  if (pct === 0) return '#2a2a27';
+  if (pct < 30) return '#3d2318';
+  if (pct < 60) return '#8a3820';
+  if (pct < 100) return '#c96442';
+  return '#5cb88a';
+}
+
 function calcWeekPct() {
   const d = new Date(state.startDate + state.dayOffset * 86400000);
-  const dow = d.getDay();
+  const dow = d.getDay() === 0 ? 6 : d.getDay() - 1;
   const weekStart = state.dayOffset - dow;
   let sum = 0;
-  for (let i = weekStart; i < weekStart + 7; i++) sum += calcDayPct(i);
+  for (let i = weekStart; i < weekStart + 7; i++) sum += calcDayPct(Math.max(0, Math.min(TOTAL_DAYS - 1, i)));
   return Math.round(sum / 7);
 }
 
 function calcStreak() {
   let streak = 0;
-  for (let o = state.dayOffset; o >= 0; o--) {
-    if (calcDayPct(o) >= 60) streak++; else break;
-  }
+  for (let o = state.dayOffset; o >= 0; o--) { if (calcDayPct(o) >= 60) streak++; else break; }
   return streak;
 }
 
-function setSession(s) {
-  state.session = s;
-  save();
-  renderMantra();
+function renderCalendar() {
+  const startD = new Date(state.startDate);
+  // align to Monday
+  const startDow = startD.getDay() === 0 ? 6 : startD.getDay() - 1;
+  const colsEl = document.getElementById('cal-cols');
+  colsEl.innerHTML = '';
+
+  // build weeks (columns)
+  const totalCols = Math.ceil((TOTAL_DAYS + startDow) / 7);
+  let dayIdx = -startDow; // offset so first col starts on Monday
+
+  // month labels per column
+  const months = ['Jan','Feb','Mar','Apr','May','Jun','Jul','Aug','Sep','Oct','Nov','Dec'];
+
+  for (let col = 0; col < totalCols; col++) {
+    const colEl = document.createElement('div');
+    colEl.className = 'cal-col';
+
+    // month label
+    const firstDayOfCol = dayIdx;
+    const labelEl = document.createElement('div');
+    labelEl.style.cssText = 'font-size:10px;color:var(--faint);height:16px;line-height:16px;white-space:nowrap;';
+    if (col === 0 || (firstDayOfCol >= 0 && firstDayOfCol < TOTAL_DAYS)) {
+      const d = new Date(state.startDate + Math.max(0, firstDayOfCol) * 86400000);
+      // show month label only at start or when month changes
+      const prevD = col > 0 ? new Date(state.startDate + Math.max(0, dayIdx - 7) * 86400000) : null;
+      if (col === 0 || (prevD && d.getMonth() !== prevD.getMonth())) {
+        labelEl.textContent = months[d.getMonth()];
+      }
+    }
+    colEl.appendChild(labelEl);
+
+    for (let row = 0; row < 7; row++, dayIdx++) {
+      const cell = document.createElement('div');
+      if (dayIdx < 0 || dayIdx >= TOTAL_DAYS) {
+        cell.className = 'cal-spacer';
+      } else {
+        cell.className = 'cal-day';
+        const bg = getDayColor(dayIdx);
+        cell.style.background = bg;
+        if (dayIdx > state.dayOffset) cell.style.opacity = '0.35';
+        if (dayIdx === state.dayOffset) {
+          cell.style.outline = '2px solid var(--text)';
+          cell.style.outlineOffset = '1px';
+        }
+        const pct = calcDayPct(dayIdx);
+        const dateStr = getDateStr(dayIdx);
+        cell.setAttribute('data-tip', 'Day ' + (dayIdx + 1) + ' · ' + dateStr + ' · ' + pct + '%');
+        const capturedOffset = dayIdx;
+        cell.onclick = () => { state.dayOffset = capturedOffset; save(); render(); };
+      }
+      colEl.appendChild(cell);
+    }
+    colsEl.appendChild(colEl);
+  }
+
+  // stats
+  let completed = 0, partial = 0;
+  for (let o = 0; o <= state.dayOffset; o++) {
+    const p = calcDayPct(o);
+    if (p === 100) completed++;
+    else if (p > 0) partial++;
+  }
+  const daysLeft = TOTAL_DAYS - state.dayOffset - 1;
+  document.getElementById('cal-stats').innerHTML =
+    '<span class="cal-stat"><strong style="color:#5cb88a">' + completed + '</strong> days complete</span>' +
+    '<span class="cal-stat"><strong style="color:#c96442">' + partial + '</strong> partial</span>' +
+    '<span class="cal-stat"><strong>' + daysLeft + '</strong> days remaining</span>' +
+    '<span class="cal-stat">Day <strong>' + (state.dayOffset + 1) + '</strong> of ' + TOTAL_DAYS + '</span>';
 }
+
+function setSession(s) { state.session = s; save(); renderMantra(); }
 
 function toggleRep(idx) {
   const k = dayKey(state.dayOffset);
@@ -296,12 +390,11 @@ function toggleRep(idx) {
   if (!state.reps[k]) state.reps[k] = {};
   if (!state.reps[k][sk]) state.reps[k][sk] = {};
   state.reps[k][sk][idx] = !state.reps[k][sk][idx];
-  save();
-  renderMantra();
+  save(); renderMantra();
 }
 
 function speakMantra() {
-  if (!('speechSynthesis' in window)) { alert('Browser does not support text-to-speech. Try Chrome.'); return; }
+  if (!('speechSynthesis' in window)) { alert('Use Chrome for text-to-speech.'); return; }
   window.speechSynthesis.cancel();
   const u = new SpeechSynthesisUtterance(MANTRA);
   u.rate = 0.88; u.pitch = 1; u.lang = 'en-IN';
@@ -311,15 +404,12 @@ function speakMantra() {
 function renderMantra() {
   document.getElementById('mantra-text').textContent = '"' + MANTRA + '"';
   ['morning','afternoon','night'].forEach(s => {
-    const btn = document.getElementById('s-' + s);
-    btn.classList.toggle('active', state.session === s);
+    document.getElementById('s-' + s).classList.toggle('active', state.session === s);
   });
-  const reps = SESSION_REPS[state.session];
   const k = dayKey(state.dayOffset);
   const done = (state.reps[k] && state.reps[k][state.session]) || {};
   const row = document.getElementById('rep-row');
   row.innerHTML = '';
-  // group: morning=3, noon=6 (3+3), night=9 (3+3+3)
   const groups = state.session === 'morning' ? [3] : state.session === 'afternoon' ? [3,3] : [3,3,3];
   let idx = 0;
   groups.forEach((grp, gi) => {
@@ -328,18 +418,14 @@ function renderMantra() {
       const dot = document.createElement('div');
       dot.className = 'rep-dot' + (done[idx] ? ' done' : '');
       dot.textContent = idx + 1;
-      dot.onclick = () => toggleRep(idx);
+      const capturedIdx = idx;
+      dot.onclick = () => toggleRep(capturedIdx);
       row.appendChild(dot);
     }
   });
 }
 
-function clearToday() {
-  const k = dayKey(state.dayOffset);
-  state.checks[k] = {};
-  state.reps[k] = {};
-  save(); render();
-}
+function clearToday() { const k = dayKey(state.dayOffset); state.checks[k] = {}; state.reps[k] = {}; save(); render(); }
 
 function render() {
   const o = state.dayOffset;
@@ -348,11 +434,13 @@ function render() {
   document.getElementById('today-pct').textContent = calcDayPct(o) + '%';
   document.getElementById('week-pct').textContent = calcWeekPct() + '%';
   document.getElementById('streak-val').textContent = calcStreak() + 'd';
+  document.getElementById('days-left').textContent = Math.max(0, TOTAL_DAYS - o - 1);
 
-  const dayNum = getDayNum(o);
+  const dayNum = o + 1;
   const phase = PHASES.find(p => dayNum >= p.days[0] && dayNum <= p.days[1]);
   document.getElementById('phase-text').textContent = phase ? '🚩 ' + phase.text : '🎯 6 months complete — you did it.';
 
+  renderCalendar();
   renderMantra();
 
   const plan = getPlan(o);
@@ -387,8 +475,8 @@ function render() {
   });
 }
 
-document.getElementById('prev-day').addEventListener('click', () => { state.dayOffset = Math.max(0, state.dayOffset - 1); save(); render(); });
-document.getElementById('next-day').addEventListener('click', () => { state.dayOffset = Math.min(181, state.dayOffset + 1); save(); render(); });
+document.getElementById('prev-day').addEventListener('click', () => { if (state.dayOffset > 0) { state.dayOffset--; save(); render(); } });
+document.getElementById('next-day').addEventListener('click', () => { if (state.dayOffset < TOTAL_DAYS - 1) { state.dayOffset++; save(); render(); } });
 
 load(); render();
 </script>
